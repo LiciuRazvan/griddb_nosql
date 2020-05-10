@@ -1,0 +1,52 @@
+n = int(input())
+valori = list(map(int, input().split()))
+numere = []
+
+for i in range(n-1):
+    numere.append(valori[i+1]-valori[i])
+valori_noi = numere.copy()
+
+lungime_max = 0
+lungime_cur = 0
+
+sir_cur = []
+sir_max = []
+count_poz = 0
+count_neg = 0
+
+siruri = []
+siruri_index = 0
+for i in range(len(valori_noi)-1):
+    if (valori_noi[i] >= 0 and valori_noi[i+1] < 0) or (valori_noi[i] < 0 and valori_noi[i+1] >= 0):
+        lungime_cur += 1
+        sir_cur.append(i+1)
+    else:
+        lungime_cur = 0
+        siruri.append(sir_cur)
+        sir_cur = [i+1]
+    if lungime_cur >= lungime_max :
+        sir_max = sir_cur
+        lungime_max = lungime_cur
+
+for i in range(len(valori_noi)):
+    if (valori_noi[i] >= 0):
+        count_poz += 1
+    else:
+        count_neg += 1
+
+poz = float(count_poz/len(valori_noi))*100
+neg = float(count_neg/len(valori_noi))*100
+formatare = "+:{:.2f}-:{:.2f}%"
+
+if lungime_max == 0:
+    print(0)
+else:
+    print(lungime_max+1)
+    max_lungimi = [0, 0]  # [index, valoare]
+    for i in range(len(siruri)):
+        if len(siruri[i]) >= max_lungimi[1]:
+            max_lungimi[0] = i
+            max_lungimi[1] = len(siruri[i])
+    print(" ".join([str(valori[i+1]) for i in siruri[max_lungimi[0]]]))
+    print(formatare.format(poz,neg))
+
